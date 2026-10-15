@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMTOM // MAINFRAME OVERRIDE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Courier New', monospace;
+        }
+
+        body {
+            background-color: #020003;
+            color: #ff0033;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Matrix Canvas Background */
+        #matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.25;
+        }
+
+        /* Lớp phủ màn hình CRT sắc nét */
+        .crt-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Main Gateway Card */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(12, 1, 6, 0.94);
+            border: 2px solid #ff0033;
+            border-radius: 22px;
+            padding: 38px 25px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 45px rgba(255, 0, 51, 0.65), inset 0 0 25px rgba(255, 0, 51, 0.3);
+            backdrop-filter: blur(14px);
+        }
+
+        /* Chữ EMTOM Cực Đại, Dày & Siêu Nét */
+        .brand-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 12px #ff0033, 0 0 30px #ff0033, 0 0 60px #ff0033, 0 0 90px #ff0033;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .sub-title {
+            font-size: 0.8rem;
+            color: #00f0ff;
+            letter-spacing: 5px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #00f0ff;
+            font-weight: bold;
+        }
+
+        /* Terminal Console */
+        .terminal {
+            background: #000000;
+            border: 1px solid #ff0033;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.78rem;
+            color: #ff4d6d;
+            height: 85px;
+            overflow: hidden;
+            margin-bottom: 22px;
+            box-shadow: inset 0 0 12px rgba(255, 0, 51, 0.6);
+            font-family: monospace;
+            line-height: 1.5;
+        }
+
+        /* Progress Bar Section */
+        .progress-box {
+            margin-bottom: 25px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: #ffa3b3;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 14px;
+            background: #120003;
+            border: 1px solid #ff0033;
+            border-radius: 7px;
+            overflow: hidden;
+            padding: 2px;
+            box-shadow: 0 0 10px rgba(255, 0, 51, 0.4);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff0033, #00f0ff);
+            border-radius: 5px;
+            box-shadow: 0 0 15px #00f0ff;
+        }
+
+        /* Button Blue Glow Cực Đỉnh */
+        .btn-access {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: #020b16;
+            color: #00f0ff;
+            border: 2px solid #00f0ff;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-decoration: none;
+            text-transform: uppercase;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.8), inset 0 0 15px rgba(0, 240, 255, 0.4);
+            text-shadow: 0 0 10px #00f0ff;
+            transition: all 0.2s ease;
+        }
+
+        .btn-access:hover, .btn-access:active {
+            background: #00f0ff;
+            color: #000000;
+            box-shadow: 0 0 45px #00f0ff;
+            text-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix"></canvas>
+    <div class="crt-overlay"></div>
+
+    <div class="card">
+        <!-- Chữ EMTOM làm điểm nhấn chính -->
+        <div class="brand-title">EMTOM</div>
+        <div class="sub-title">/// MAINFRAME OVERRIDE ///</div>
+
+        <div class="terminal" id="terminal">
+            <div>[SYS] Khởi tạo luồng mạng bảo mật...</div>
+        </div>
+
+        <div class="progress-box">
+            <div class="progress-info">
+                <span>SYSTEM BYPASS</span>
+                <span id="timer-text">2.0s</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="fill"></div>
+            </div>
+        </div>
+
+        <a href="https://linkbio.co/tomjuu09" class="btn-access">
+            ACCESS MAINFRAME NOW
+        </a>
+    </div>
+
+    <script>
+        const TARGET_URL = "https://linkbio.co/tomjuu09";
+        const DURATION = 2000; // Chuẩn 2.0 giây
+
+        // Matrix background
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = "0123456789ABCDEFEMTOM";
+        const fontSize = 14;
+        const cols = Math.floor(canvas.width / fontSize);
+        const drops = Array(cols).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(2, 0, 3, 0.1)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff0033";
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const txt = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(txt, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 30);
+
+        // Terminal Log Animation
+        const terminal = document.getElementById('terminal');
+        const logs = [
+            "[SEC] Nối luồng mã hóa SHA-512...",
+            "[AUTH] Cấp quyền ưu tiên cấp root...",
+            "[OK] Đã kết nối! Đang chuyển hướng..."
+        ];
+        let step = 0;
+        const logTimer = setInterval(() => {
+            if (step < logs.length) {
+                const div = document.createElement('div');
+                div.textContent = logs[step];
+                terminal.appendChild(div);
+                terminal.scrollTop = terminal.scrollHeight;
+                step++;
+            }
+        }, 450);
+
+        // Accurate Smooth Timer 2.0s
+        const fill = document.getElementById('fill');
+        const timerText = document.getElementById('timer-text');
+        const startTime = performance.now();
+
+        function updateProgress(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min((elapsed / DURATION) * 100, 100);
+            const remaining = Math.max((DURATION - elapsed) / 1000, 0).toFixed(1);
+
+            fill.style.width = progress + "%";
+            timerText.textContent = remaining + "s";
+
+            if (elapsed < DURATION) {
+                requestAnimationFrame(updateProgress);
+            } else {
+                clearInterval(logTimer);
+                window.location.href = TARGET_URL;
+            }
+        }
+        requestAnimationFrame(updateProgress);
+    </script>
+</body>
+</html>
